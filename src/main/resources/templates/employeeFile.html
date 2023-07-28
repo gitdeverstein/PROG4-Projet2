@@ -10,28 +10,28 @@
     <nav th:replace="employees :: navbar" ></nav>
     <h2>Employee info</h2>
     <form th:action="@{/saveEmployee}" method="put"> //add form
-        <div th:object="${createEmployee}">
+        <div th:object="${employee}">
             <div class="row">
                 <div class="col-md-4">
-                    <img th:src="'data:image/png;base64'+ ${createEmployee.profile}"
+                    <img th:src="'data:image/png;base64'+ ${employee.profile}"
                          alt="Profile Image"
                          class="img-fluid">
                 </div>
                 <div class="col-md-8">
                     <ul class="list-group">
-                        <li class="list-group-item">id: <span th:text="${createEmployee.id}"></span></li>
-                        <li class="list-group-item">Firstname: <span th:text="${createEmployee.firstName}"></span></li>
-                        <li class="list-group-item">Lastname: <span th:text="${createEmployee.lastName}"></span></li>
-                        <li class="list-group-item">Gender: <span th:text="${createEmployee.gender}"></span></li>
-                        <li class="list-group-item">BirthDate: <span th:text="${createEmployee.birthDate}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${createEmployee.personalEmail}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${createEmployee.CIN}"></span></li>
-                        <li class="list-group-item">Registration Number: <span th:text="${createEmployee.registrationNumber}"></span></li>
-                        <li class="list-group-item">Company name: <span th:text="${createEmployee.address}"></span></li>
-                        <li class="list-group-item">Company description: <span th:text="${createEmployee.engagementDate}" type="date"></span></li>
-                        <li class="list-group-item">Company description: <span th:text="${createEmployee.resignationDate}" type="date"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${createEmployee.childrenCount}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${createEmployee.cnapsNumber}"></span></li>
+                        <li class="list-group-item">id: <span th:text="${employee.id}"></span></li>
+                        <li class="list-group-item">Firstname: <span th:text="${employee.firstName}"></span></li>
+                        <li class="list-group-item">Lastname: <span th:text="${employee.lastName}"></span></li>
+                        <li class="list-group-item">Gender: <span th:text="${employee.gender}"></span></li>
+                        <li class="list-group-item">BirthDate: <span th:text="${employee.birthDate}"></span></li>
+                        <li class="list-group-item">Email: <span th:text="${employee.personalEmail}"></span></li>
+                        <li class="list-group-item">Email: <span th:text="${employee.CIN}"></span></li>
+                        <li class="list-group-item">Registration Number: <span th:text="${employee.registrationNumber}"></span></li>
+                        <li class="list-group-item">Company name: <span th:text="${employee.address}"></span></li>
+                        <li class="list-group-item">Company description: <span th:text="${employee.engagementDate}" type="date"></span></li>
+                        <li class="list-group-item">Company description: <span th:text="${employee.resignationDate}" type="date"></span></li>
+                        <li class="list-group-item">Email: <span th:text="${employee.childrenCount}"></span></li>
+                        <li class="list-group-item">Email: <span th:text="${employee.cnapsNumber}"></span></li>
                     </ul>
                 </div>
             </div>

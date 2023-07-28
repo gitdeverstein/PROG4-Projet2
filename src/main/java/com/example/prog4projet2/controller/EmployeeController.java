@@ -37,7 +37,7 @@ public class EmployeeController {
     public String addNewEmployee(Model model){
         CreateEmployee createEmployee = new CreateEmployee();
         EmployeeConf employeeConf= new EmployeeConf();
-        model.addAttribute("employee", createEmployee);
+        model.addAttribute("creatEmployee", createEmployee);
         model.addAttribute("employeeConf", employeeConf);
         return "addEmployee";
     }
@@ -55,6 +55,7 @@ public class EmployeeController {
     @GetMapping ("/employees/{id}")
     public String viewEmployee(@PathVariable int id, Model model){
         model.addAttribute("employee", employeeServiceImpl.findEmployeeById(id));
+        model.addAttribute("CreateEmployee", employeeServiceImpl.findEmployeeById(id));
         return "employeeFile";
     }
 
