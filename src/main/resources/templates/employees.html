@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:fragment="import">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../static/js/bootstrap.min.js" th:href="@{/js/bootstrap.min.js}"></script>
+    <title>List of employees</title>
+</head>
+<body align="center">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb" th:fragment="navbar">
+        <li class="breadcrumb-item">
+            <a href="/employees">Employees</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/employeeFile">Employee file</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/addEmployee">Add employees</a>
+        </li>
+    </ol>
+    <form id="searchForm">
+        <div class="form-row">
+            <div class="col">
+                <input type="text" class="form-control" name="firstName" placeholder="First Name">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+            </div>
+            <div class="col">
+                <select class="form-control" name="gender">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" name="function" placeholder="Function">
+            </div>
+            <div class="col">
+                <input type="date" class="form-control" name="engagementDate" placeholder="Hiring From Date">
+            </div>
+            <div class="col">
+                <input type="date" class="form-control" name="resignationDate" placeholder="Hiring To Date">
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary" onclick="filterEmployees()">Search</button>
+            </div>
+        </div>
+    </form>
+</nav>
+
+<h2>List of employees</h2>
+<table class="table">
+    <thead class="thead-dark">
+    <tr>
+        <th>id</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Gender</th>
+        <th>BirthDate</th>
+        <th>Registration number</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="createEmployee : ${employees}">
+            <td th:text="${createEmployee.id}"></td>
+            <td th:text="${createEmployee.firstName}"></td>
+            <td th:text="${createEmployee.lastName}"></td>
+            <td th:text="${createEmployee.gender}"></td>
+            <td th:text="${createEmployee.birthDate}"></td>
+            <td th:text="${createEmployee.registrationNumber}"></td>
+            <td>
+                <a th:href="${'/employees/'+ createEmployee.id}" class="btn btn-primary">Details</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script th:inline="javascript">
+    function filterEmployees() {
+        // Get form data
+        const formData = new FormData(document.getElementById("searchForm"));
+        const searchParams = new URLSearchParams(formData).toString();
+
+        // Fetch filtered data from the server
+        fetch("/filterEmployees?" + searchParams)
+            .then(response => response.json())
+            .then(data => {
+                // Update table with filtered data
+                const tbody = document.querySelector("tbody");
+                tbody.innerHTML = "";
+
+                data.forEach(createEmployee => {
+                    const row = document.createElement("tr");
+
+                    const idCell = document.createElement("td");
+                    idCell.textContent = createEmployee.id;
+                    row.appendChild(idCell);
+
+                    const firstNameCell = document.createElement("td");
+                    firstNameCell.textContent = createEmployee.firstName;
+                    row.appendChild(firstNameCell);
+
+                    const detailsCell = document.createElement("td");
+                    const detailsLink = document.createElement("a");
+                    detailsLink.setAttribute("href", "/employees/" + createEmployee.id);
+                    detailsLink.textContent = "Details";
+                    detailsLink.classList.add("btn", "btn-primary");
+                    detailsCell.appendChild(detailsLink);
+                    row.appendChild(detailsCell);
+
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    }
+</script>
+</body>
+</html>
