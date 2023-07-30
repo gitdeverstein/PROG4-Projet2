@@ -10,4 +10,5 @@ create table if not exists
         `phone_number` date,
         `companyFiscalIdentity` varchar,
         `logo` varchar
+        constraint employee_pk fk references employee(id)
 );

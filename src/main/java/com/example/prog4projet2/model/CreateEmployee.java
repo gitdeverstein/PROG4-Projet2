@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Data
@@ -36,11 +35,11 @@ public class CreateEmployee implements Serializable {
 
     private String address;
 
-    private Date engagementDate;
+    private String engagementDate;
 
-    private Date resignationDate;
+    private String resignationDate;
 
     private int childrenCount;
 
-    private int cnapsNumber;
+    private String cnapsNumber;
 }

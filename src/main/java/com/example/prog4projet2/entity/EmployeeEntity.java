@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +45,17 @@ public class EmployeeEntity {
 
     private String personalEmail;
 
+    private String function;
+
     private String CIN;
 
     private String address;
 
     private int childrenCount;
 
-    private Date engagementDate;
+    private String engagementDate;
 
-    private Date resignationDate;
+    private String resignationDate;
 
     private byte[] profile;
 
@@ -65,5 +66,5 @@ public class EmployeeEntity {
         M1, M2, OS1, OS2, OS3, OP1A, OP1B, OP2, OP3
     }
 
-    private int cnapsNumber;
+    private String cnapsNumber;
 }

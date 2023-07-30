@@ -8,7 +8,7 @@
 <nav th:replace="employees :: navbar" ></nav>
 <h2>Add New createEmployee</h2>
 
-<form th:action="@{/saveEmployee}" th:object="${creatEmployee}" method="post" enctype="multipart/form-data">
+<form th:action="@{/saveEmployee}" th:object="${createEmployee}" method="post" enctype="multipart/form-data">
     <div>
         <div class="input-group flex-nowrap">
             <div class="input-group-prepend">
@@ -24,6 +24,9 @@
             <input type="text" class="form-control" th:field="*{lastName}" aria-describedby="addon-wrapping" required>
         </div>
 
+        <label>BirthDate :</label>
+        <input type="date" id="birthDate" th:field="*{birthDate}" required>
+
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <label class="input-group-text" for="inputGroupSelect01">Gender</label>
@@ -34,19 +37,9 @@
             </select>
         </div>
 
-        <label>BirthDate :</label>
-        <input type="date" id="birthDate" th:field="*{birthDate}" required>
-
         <div class="form-group">
             <label for="exampleFormControlInput1" >Email address</label>
             <input type="email" class="form-control" th:field="*{personalEmail}" id="exampleFormControlInput1" required>
-        </div>
-
-        <div class="input-group flex-nowrap">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Location</span>
-            </div>
-            <input type="text" class="form-control" th:field="*{address}" aria-describedby="addon-wrapping" required>
         </div>
 
         <div>
@@ -59,6 +52,33 @@
                    class="form-control-file"
                    id="exampleFormControlFile1">
         </div>
+
+        <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Location</span>
+            </div>
+            <input type="text" class="form-control" th:field="*{address}" aria-describedby="addon-wrapping" required>
+        </div>
+
+        <label>Engagement date :</label>
+        <input type="date" id="date1" th:field="*{engagementDate}" required>
+
+        <label>resignation date :</label>
+        <input type="date" id="date2" th:field="*{resignationDate}">
+    </div>
+
+    <div class="input-group flex-nowrap">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Children</span>
+        </div>
+        <input type="number" class="form-control" th:field="*{childrenCount}" aria-describedby="addon-wrapping" required>
+    </div>
+
+    <div class="input-group flex-nowrap">
+        <div class="input-group-prepend">
+            <span class="input-group-text">CNAPS number</span>
+        </div>
+        <input type="text" class="form-control" th:field="*{cnapsNumber}" aria-describedby="addon-wrapping" required>
     </div>
     <button type="submit" value="upload" class="btn btn-primary">Add</button>
 </form>

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class Employee implements Serializable {
     @Id
     private int id;
+    private String registrationNumber;
     private String firstName;
     private String lastName;
 
@@ -26,21 +27,21 @@ public class Employee implements Serializable {
 
     private String gender;
 
-    private String CIN;
-
     private String personalEmail;
 
-    private String registrationNumber;
+    private String function;
 
     private String profile;
 
+    private String CIN;
+
     private String address;
 
-    private Date engagementDate;
+    private String engagementDate;
 
-    private Date resignationDate;
+    private String resignationDate;
 
     private int childrenCount;
 
-    private int cnapsNumber;
+    private String cnapsNumber;
 }

@@ -2,7 +2,6 @@ package com.example.prog4projet2.service;
 
 import com.example.prog4projet2.entity.EmployeeConfEntity;
 import com.example.prog4projet2.entity.EmployeeEntity;
-import com.example.prog4projet2.repository.EmployeeConfRepository;
 import com.example.prog4projet2.repository.EmployeeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -19,12 +18,11 @@ import java.util.Optional;
 public class EmployeeServiceImpl{
     private final EmployeeRepository employeeRepository;
 
-
     public List<EmployeeEntity> getAllEmployee() {
         return employeeRepository.findAll();
     }
 
-    public void saveAll(List<EmployeeEntity> employees){
+    public void saveAllEmployee(List<EmployeeEntity> employees){
         employeeRepository.saveAll(employees);
     }
 
@@ -57,5 +55,21 @@ public class EmployeeServiceImpl{
 
     public List<EmployeeEntity> getEmployeeByLastName(String lastname){
         return employeeRepository.findByLastNameContaining(lastname);
+    }
+
+    public List<EmployeeEntity> getEmployeeByFunction(String function){
+        return employeeRepository.findByFunction(function);
+    }
+
+    public List<EmployeeEntity> getEmployeeByGender(String gender){
+        return employeeRepository.findByGender(gender);
+    }
+
+    public List<String> getEmployeeByEngagement() {
+        return employeeRepository.findByEngagementDate();
+    }
+
+    public List<String> getEmployeeByResignation() {
+        return employeeRepository.findByResignationDate();
     }
 }

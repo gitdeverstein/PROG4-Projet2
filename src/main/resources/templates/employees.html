@@ -19,10 +19,11 @@
             <a href="/addEmployee">Add employees</a>
         </li>
     </ol>
-    <form id="searchForm">
-        <div class="form-row">
+</nav>
+    <form th:action="@{/employees}" method="get">
+        <div id="searchForm" class="form-row" th:object="${filter}">
             <div class="col">
-                <input type="text" class="form-control" name="firstName" placeholder="First Name">
+                <input type="text" class="form-control" th:field="*{firstName}" name="firstName" placeholder="First Name">
             </div>
             <div class="col">
                 <input type="text" class="form-control" name="lastName" placeholder="Last Name">
@@ -44,11 +45,9 @@
                 <input type="date" class="form-control" name="resignationDate" placeholder="Hiring To Date">
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary" onclick="filterEmployees()">Search</button>
+                <button type="submit" class="btn btn-primary" >Search</button>
             </div>
         </div>
-    </form>
-</nav>
 
 <h2>List of employees</h2>
 <table class="table">
@@ -62,61 +61,20 @@
         <th>Registration number</th>
     </tr>
     </thead>
-    <tbody>
-        <tr th:each="createEmployee : ${employees}">
-            <td th:text="${createEmployee.id}"></td>
-            <td th:text="${createEmployee.firstName}"></td>
-            <td th:text="${createEmployee.lastName}"></td>
-            <td th:text="${createEmployee.gender}"></td>
-            <td th:text="${createEmployee.birthDate}"></td>
-            <td th:text="${createEmployee.registrationNumber}"></td>
+    <tbody th:object="${emp}">
+        <tr th:each="employee : ${emp}">
+            <td th:text="${employee.id}"></td>
+            <td th:text="${employee.firstName}"></td>
+            <td th:text="${employee.lastName}"></td>
+            <td th:text="${employee.gender}"></td>
+            <td th:text="${employee.birthDate}"></td>
+            <td th:text="${employee.registrationNumber}"></td>
             <td>
-                <a th:href="${'/employees/'+ createEmployee.id}" class="btn btn-primary">Details</a>
+                <a th:href="${'/employees/'+ employee.id}" class="btn btn-primary">Details</a>
             </td>
         </tr>
     </tbody>
 </table>
-
-<script th:inline="javascript">
-    function filterEmployees() {
-        // Get form data
-        const formData = new FormData(document.getElementById("searchForm"));
-        const searchParams = new URLSearchParams(formData).toString();
-
-        // Fetch filtered data from the server
-        fetch("/filterEmployees?" + searchParams)
-            .then(response => response.json())
-            .then(data => {
-                // Update table with filtered data
-                const tbody = document.querySelector("tbody");
-                tbody.innerHTML = "";
-
-                data.forEach(createEmployee => {
-                    const row = document.createElement("tr");
-
-                    const idCell = document.createElement("td");
-                    idCell.textContent = createEmployee.id;
-                    row.appendChild(idCell);
-
-                    const firstNameCell = document.createElement("td");
-                    firstNameCell.textContent = createEmployee.firstName;
-                    row.appendChild(firstNameCell);
-
-                    const detailsCell = document.createElement("td");
-                    const detailsLink = document.createElement("a");
-                    detailsLink.setAttribute("href", "/employees/" + createEmployee.id);
-                    detailsLink.textContent = "Details";
-                    detailsLink.classList.add("btn", "btn-primary");
-                    detailsCell.appendChild(detailsLink);
-                    row.appendChild(detailsCell);
-
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    }
-</script>
+</form>
 </body>
 </html>

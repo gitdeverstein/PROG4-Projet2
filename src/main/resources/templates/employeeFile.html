@@ -9,7 +9,7 @@
 <div>
     <nav th:replace="employees :: navbar" ></nav>
     <h2>Employee info</h2>
-    <form th:action="@{/saveEmployee}" method="put"> //add form
+    <form th:action="@{/employees/id}" method="put"> //add form
         <div th:object="${employee}">
             <div class="row">
                 <div class="col-md-4">
@@ -43,7 +43,7 @@
                      class="img-fluid">
             </div>
             <ul class="list-group">
-                <li class="list-group-item">Company name: <span th:text="${employeeConf.companyName}"></span></li>
+                <li class="list-group-item">Company name: <input th:text="${employeeConf.companyName}" type="text" required></li>
                 <li class="list-group-item">Company description: <span th:text="${employeeConf.companyDescription}"></span></li>
                 <li class="list-group-item">Company slogan: <span th:text="${employeeConf.companySlogan}"></span></li>
                 <li class="list-group-item">Company address: <span th:text="${employeeConf.companyAddress}"></span></li>
