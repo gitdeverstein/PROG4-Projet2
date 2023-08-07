@@ -15,8 +15,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class CreateEmployee implements Serializable {
-    @Id
-    private int id;
+
+    private String id;
     private String firstName;
     private String lastName;
 

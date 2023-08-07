@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="employees :: import">
+<head th:replace="~{employees :: import}">
     <meta charset="UTF-8">
     <title>Employee file</title>
 </head>
 
 <body align="center">
 <div>
-    <nav th:replace="employees :: navbar" ></nav>
+    <nav th:replace="~{employees :: navbar}" ></nav>
     <h2>Employee info</h2>
-    <form th:action="@{/employees/id}" method="put"> //add form
-        <div th:object="${employee}">
-            <div class="row">
+    <form th:action="@{/employees/id}" method="post">
+            <div class="row" th:object="${employee}">
                 <div class="col-md-4">
                     <img th:src="'data:image/png;base64'+ ${employee.profile}"
                          alt="Profile Image"
@@ -19,38 +18,21 @@
                 </div>
                 <div class="col-md-8">
                     <ul class="list-group">
-                        <li class="list-group-item">id: <span th:text="${employee.id}"></span></li>
-                        <li class="list-group-item">Firstname: <span th:text="${employee.firstName}"></span></li>
-                        <li class="list-group-item">Lastname: <span th:text="${employee.lastName}"></span></li>
-                        <li class="list-group-item">Gender: <span th:text="${employee.gender}"></span></li>
-                        <li class="list-group-item">BirthDate: <span th:text="${employee.birthDate}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${employee.personalEmail}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${employee.CIN}"></span></li>
-                        <li class="list-group-item">Registration Number: <span th:text="${employee.registrationNumber}"></span></li>
-                        <li class="list-group-item">Company name: <span th:text="${employee.address}"></span></li>
-                        <li class="list-group-item">Company description: <span th:text="${employee.engagementDate}" type="date"></span></li>
-                        <li class="list-group-item">Company description: <span th:text="${employee.resignationDate}" type="date"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${employee.childrenCount}"></span></li>
-                        <li class="list-group-item">Email: <span th:text="${employee.cnapsNumber}"></span></li>
+                        <li class="list-group-item">Id: <span th:text="${employee.id}"></span></li>
+                        <li class="list-group-item">Firstname: <input th:value="${employee.firstName}"></li>
+                        <li class="list-group-item">Lastname: <input th:value="${employee.lastName}"></li>
+                        <li class="list-group-item">Gender: <input th:value="${employee.gender}"></li>
+                        <li class="list-group-item">BirthDate: <input th:value="${employee.birthDate}"></li>
+                        <li class="list-group-item">Email: <input th:value="${employee.personalEmail}"></li>
+                        <li class="list-group-item">CIN: <input th:value="${employee.CIN}"></li>
+                        <li class="list-group-item">Registration Number: <input th:value="${employee.registrationNumber}"></li>
+                        <li class="list-group-item">Engagement date: <input type="date" id="date1" th:value="${employee.engagementDate}" ></li>
+                        <li class="list-group-item">Resignation date : <input type="date" id="date2" th:value="${employee.resignationDate}" ></li>
+                        <li class="list-group-item">Child in charge: <input th:value="${employee.childrenCount}"></li>
+                        <li class="list-group-item">CNAPS number: <input th:value="${employee.cnapsNumber}"></li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div th:object="${employeeConf}">
-            <div class="col-md-4">
-                <img th:src="'data:image/png;base64'+ ${employeeConf.logo}"
-                     alt="Profile logo"
-                     class="img-fluid">
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">Company name: <input th:text="${employeeConf.companyName}" type="text" required></li>
-                <li class="list-group-item">Company description: <span th:text="${employeeConf.companyDescription}"></span></li>
-                <li class="list-group-item">Company slogan: <span th:text="${employeeConf.companySlogan}"></span></li>
-                <li class="list-group-item">Company address: <span th:text="${employeeConf.companyAddress}"></span></li>
-                <li class="list-group-item">Contact: <span th:text="${employeeConf.companyPhone}"></span></li>
-                <li class="list-group-item">FiscalIdentity: <span th:text="${employeeConf.companyFiscalIdentity}"></span></li>
-            </ul>
-        </div>
         <button type="submit" value="upload" class="btn btn-primary">Save</button>
     </form>
 

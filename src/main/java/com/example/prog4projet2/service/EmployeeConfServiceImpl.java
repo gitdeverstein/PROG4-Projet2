@@ -5,7 +5,6 @@ import com.example.prog4projet2.repository.EmployeeConfRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,15 +13,16 @@ public class EmployeeConfServiceImpl {
     private final EmployeeConfRepository employeeConfRepository;
 
 
-    public Optional<EmployeeConfEntity> getEmployeeConfById(int id){
+    public Optional<EmployeeConfEntity> getEmployeeConfById(Long id) {
         return employeeConfRepository.findById(id);
     }
 
-    public Optional<EmployeeConfEntity> findEmployeeConfById(int id){
-        return employeeConfRepository.findById(id);
+
+    public EmployeeConfEntity findEmployeeConfById(int id) {
+        return employeeConfRepository.findByEmployeeId(id).orElseThrow(() -> new RuntimeException("Couldn't find employeeConf"));
     }
 
-    public void saveOne(EmployeeConfEntity employeeConf){
+    public void saveOne(EmployeeConfEntity employeeConf) {
         employeeConfRepository.save(employeeConf);
     }
 }

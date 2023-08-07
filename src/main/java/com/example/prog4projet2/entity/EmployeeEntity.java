@@ -19,7 +19,7 @@ import java.util.List;
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private CINEntity cinEntity;

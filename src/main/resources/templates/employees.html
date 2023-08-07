@@ -6,7 +6,7 @@
     <script src="../static/js/bootstrap.min.js" th:href="@{/js/bootstrap.min.js}"></script>
     <title>List of employees</title>
 </head>
-<body align="center">
+<body>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb" th:fragment="navbar">
         <li class="breadcrumb-item">
@@ -20,29 +20,29 @@
         </li>
     </ol>
 </nav>
-    <form th:action="@{/employees}" method="get">
+    <form>
         <div id="searchForm" class="form-row" th:object="${filter}">
             <div class="col">
                 <input type="text" class="form-control" th:field="*{firstName}" name="firstName" placeholder="First Name">
             </div>
             <div class="col">
-                <input type="text" class="form-control" name="lastName" placeholder="Last Name">
+                <input type="text" class="form-control" th:field="*{lastName}" name="lastName" placeholder="Last Name">
             </div>
             <div class="col">
-                <select class="form-control" name="gender">
+                <select class="form-control" th:field="*{gender}" name="gender">
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
             </div>
             <div class="col">
-                <input type="text" class="form-control" name="function" placeholder="Function">
+                <input type="text" class="form-control" th:field="*{function}" name="function" placeholder="Function">
             </div>
             <div class="col">
-                <input type="date" class="form-control" name="engagementDate" placeholder="Hiring From Date">
+                <input type="date" class="form-control" th:field="*{engagementDate}" name="engagementDate" placeholder="Hiring From Date">
             </div>
             <div class="col">
-                <input type="date" class="form-control" name="resignationDate" placeholder="Hiring To Date">
+                <input type="date" class="form-control" th:field="*{resignationDate}" name="resignationDate" placeholder="Hiring To Date">
             </div>
             <div class="col">
                 <button type="submit" class="btn btn-primary" >Search</button>
@@ -61,16 +61,19 @@
         <th>Registration number</th>
     </tr>
     </thead>
-    <tbody th:object="${emp}">
-        <tr th:each="employee : ${emp}">
-            <td th:text="${employee.id}"></td>
-            <td th:text="${employee.firstName}"></td>
-            <td th:text="${employee.lastName}"></td>
-            <td th:text="${employee.gender}"></td>
-            <td th:text="${employee.birthDate}"></td>
-            <td th:text="${employee.registrationNumber}"></td>
+    <tbody>
+        <tr th:each="empl : ${emp}">
+            <td th:text="${empl.id}"></td>
+            <td th:text="${empl.firstName}"></td>
+            <td th:text="${empl.lastName}"></td>
+            <td th:text="${empl.gender}"></td>
+            <td th:text="${empl.birthDate}"></td>
+            <td th:text="${empl.registrationNumber}"></td>
             <td>
-                <a th:href="${'/employees/'+ employee.id}" class="btn btn-primary">Details</a>
+                <a th:href="${'/employees/'+ empl.id}" method="get" class="btn btn-primary">Details</a>
+            </td>
+            <td>
+                <a th:href="@{/delete/{id}(id=${empl.id})}" method="delete" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     </tbody>

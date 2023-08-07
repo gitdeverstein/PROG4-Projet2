@@ -4,74 +4,84 @@ import com.example.prog4projet2.controller.mapper.EmployeeMapper;
 import com.example.prog4projet2.entity.EmployeeConfEntity;
 import com.example.prog4projet2.entity.EmployeeEntity;
 import com.example.prog4projet2.model.CreateEmployee;
+import com.example.prog4projet2.model.EmployeeConf;
 import com.example.prog4projet2.model.InputModel;
 import com.example.prog4projet2.repository.EmployeeConfRepository;
 import com.example.prog4projet2.repository.EmployeeRepository;
 import com.example.prog4projet2.service.EmployeeConfServiceImpl;
 import com.example.prog4projet2.service.EmployeeServiceImpl;
-import jakarta.annotation.Nullable;
+import jakarta.annotation.Nonnull;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 public class EmployeeController {
     private final EmployeeServiceImpl employeeServiceImpl;
     private final EmployeeConfServiceImpl employeeConfService;
     private final EmployeeRepository employeeRepository;
     private EmployeeMapper mapper;
     private final EmployeeConfRepository employeeConfRepository;
+    private final EmployeeConf editableCompany = new EmployeeConf();
 
     @GetMapping("/employees")
     public String getAllEmployees(Model model,
-                                  @ModelAttribute("filter") @Nullable InputModel input) {
+                                  @ModelAttribute("filter") @Nonnull InputModel input) {
         InputModel filter = new InputModel();
         model.addAttribute("filter", filter);
-        if (input != null) {
-            model.addAttribute("empFiltered", employeeServiceImpl.getEmployeeByFirstName(input.getFirstName()));
-            model.addAttribute("empFiltered", employeeServiceImpl.getEmployeeByLastName(input.getLastName()));
-            model.addAttribute("emPFiltered", employeeServiceImpl.getEmployeeByGender(input.getGender()));
-            model.addAttribute("empFiltered", employeeServiceImpl.getEmployeeByFunction(input.getFunction()));
-            return "employees";
+        log.info("size= {} ", employeeServiceImpl.getAllEmployee().size());
+
+        if (input.getFirstName() == null &&
+                input.getLastName() == null &&
+                input.getGender() == null &&
+                input.getFunction() == null &&
+                input.getResignationDate() == null &&
+                input.getEngagementDate() == null) {
+            model.addAttribute("emp", employeeServiceImpl.getAllEmployee());
+        } else {
+            log.info("input {}", input);
+            model.addAttribute("emp", employeeServiceImpl.getEmployeeByFirstName(input.getFirstName()));
         }
-        model.addAttribute("emp", employeeServiceImpl.getAllEmployee());
         return "employees";
     }
 
 
-    @GetMapping ("/addEmployee")
-    public String addNewEmployee(Model model){
+    @GetMapping("/addEmployee")
+    public String addNewEmployee(Model model) {
         CreateEmployee createEmployee = new CreateEmployee();
-        model.addAttribute("createEmployee", createEmployee);
+        model.addAttribute("addEmp", createEmployee);
         return "addEmployee";
     }
 
-    @PostMapping ("/saveEmployee")
-    public String saveEmployee(@ModelAttribute("createEmployee") CreateEmployee createEmp)
-            throws IOException{
-        EmployeeEntity employee= mapper.toDomain(createEmp);
+    @PostMapping("/saveEmployee")
+    public String saveEmployee(@ModelAttribute("addEmp") CreateEmployee createEmp)
+            throws IOException {
+        EmployeeEntity employee = mapper.toDomain(createEmp);
         employeeServiceImpl.saveOne(employee);
         return "redirect:/employees";
     }
 
-    @GetMapping ("/employees/{id}")
-    public String viewEmployee(@PathVariable int id, Model model){
+    @GetMapping("/employees/{id}")
+    public String viewEmployee(@PathVariable int id, Model model) {
         model.addAttribute("employee", employeeServiceImpl.findEmployeeById(id));
-        model.addAttribute("employeeConf", employeeConfService.findEmployeeConfById(id));
+
         return "employeeFile";
     }
 
-    @PutMapping("/employees/{id}")
-    public String updateEmployee(@PathVariable Integer id,
+    @PostMapping("/employees/{id}")
+    public String updateEmployee(@PathVariable String id,
                                  @ModelAttribute EmployeeEntity updatedEmployee,
-                                 @ModelAttribute EmployeeConfEntity updatedEmployeeConf){
-        EmployeeEntity employee= employeeRepository.save(updatedEmployee);
-        EmployeeConfEntity employeeConf= employeeConfRepository.save(updatedEmployeeConf);
+                                 @ModelAttribute EmployeeConfEntity updatedEmployeeConf) {
+        EmployeeEntity employee = employeeRepository.findById(Integer.valueOf(id))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + id));
+
         employee.setRegistrationNumber(updatedEmployee.getRegistrationNumber());
         employee.setFirstName(updatedEmployee.getFirstName());
         employee.setLastName(updatedEmployee.getLastName());
@@ -86,28 +96,45 @@ public class EmployeeController {
         employee.setEngagementDate(updatedEmployee.getEngagementDate());
         employee.setResignationDate(updatedEmployee.getResignationDate());
         employee.setSocioProfessionalCategory(updatedEmployee.getSocioProfessionalCategory());
-        employeeConf.setCompanyName(updatedEmployeeConf.getCompanyName());
-        employeeConf.setCompanyDescription(updatedEmployeeConf.getCompanyDescription());
-        employeeConf.setCompanySlogan(updatedEmployeeConf.getCompanySlogan());
-        employeeConf.setCompanyAddress(updatedEmployeeConf.getCompanyAddress());
-        employeeConf.setCompanyFiscalIdentity(updatedEmployeeConf.getCompanyFiscalIdentity());
-        employeeConf.setCompanyPhone(updatedEmployeeConf.getCompanyPhone());
+
         employeeRepository.save(employee);
-        employeeConfRepository.save(employeeConf);
         return "redirect:/employees";
     }
 
+
     @PostMapping("/saveProfile/{id_employee}")
     public String saveProfile(
-            @RequestParam("profile") MultipartFile profile,
-            @PathVariable("id_employee") Integer id_employee,
-            @PathVariable("id_employee_conf") Integer id_employee_conf,
-            @PathVariable("logo") MultipartFile logo) {
+            @RequestParam("profile") Byte profile,
+            @PathVariable("id_employee") Integer id_employee){
         EmployeeEntity employee = employeeServiceImpl.getEmployeeById(id_employee).get();
-        EmployeeConfEntity employeeConf= employeeConfService.getEmployeeConfById(id_employee_conf).get();
-        employeeConfService.saveOne(employeeConf);
+        EmployeeEntity employeeProfile = employeeServiceImpl.getEmployeeProfileById(profile).get();
         employeeServiceImpl.saveOne(employee);
+        employeeServiceImpl.saveOne(employeeProfile);
+        return "redirect:/employees";
+    }
 
+    @GetMapping("/company")
+    public String companyDescription(Model model) {
+        model.addAttribute("company", editableCompany);
+        return "companyDescription";
+    }
+
+    @PostMapping("/update_company")
+    public String updateCompany(
+            @PathVariable("id_employee_conf") Long id_employee_conf,
+            @PathVariable("logo") byte[] logo) {
+        EmployeeConfEntity employeeConf = employeeConfService.getEmployeeConfById(id_employee_conf).get();
+        EmployeeConfEntity employeeLogo = new EmployeeConfEntity();
+        employeeConfService.saveOne(employeeConf);
+        employeeConfService.saveOne(employeeLogo);
+        employeeLogo.setLogo(logo);
+        return "redirect:/employee";
+    }
+
+    @DeleteMapping("/delete/{id_employee}")
+    public String deleteEmp(@PathVariable int id_employee, HttpSession session) {
+        employeeServiceImpl.delete(id_employee);
+        session.setAttribute("msg", "Delete successfully");
         return "redirect:/employees";
     }
 }

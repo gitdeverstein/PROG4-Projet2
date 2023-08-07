@@ -1,5 +1,6 @@
 package com.example.prog4projet2.model;
 
+import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class EmployeeConf implements Serializable {
-    private int id;
+    @Id
+    private Long idConf;
 
     private String companyName;
 
@@ -26,5 +28,5 @@ public class EmployeeConf implements Serializable {
 
     private String companyFiscalIdentity;
 
-    private MultipartFile logo;
+    private String logo;
 }

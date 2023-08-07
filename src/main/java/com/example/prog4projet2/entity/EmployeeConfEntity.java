@@ -13,7 +13,8 @@ import lombok.*;
 @Setter
 public class EmployeeConfEntity {
     @Id
-    private int id;
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long idConf;
 
     private String companyName;
 
@@ -27,8 +28,7 @@ public class EmployeeConfEntity {
 
     private String companyFiscalIdentity;
 
-    @Lob
-    private String logo;
+    private byte[] logo;
 
     @OneToOne
     @JoinColumn(name = "employee_id")

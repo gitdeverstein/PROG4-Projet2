@@ -20,7 +20,7 @@ public class EmployeeMapper {
     public EmployeeEntity toDomain(CreateEmployee createEmployee) throws IOException {
 
         EmployeeEntity domainEmployee= EmployeeEntity.builder()
-                .id(createEmployee.getId())
+                .id(Integer.parseInt(createEmployee.getId()))
                 .firstName(createEmployee.getFirstName())
                 .lastName(createEmployee.getLastName())
                 .birthDate(createEmployee.getBirthDate())
@@ -37,12 +37,13 @@ public class EmployeeMapper {
         return domainEmployee;
     }
 
-    public EmployeeConfEntity toDomain(EmployeeConf employeeConf){
+    public EmployeeConfEntity toDomain(EmployeeConf employeeConf)throws IOException{
 
         EmployeeConfEntity domainEmployeeConf= EmployeeConfEntity.builder()
-                .id(employeeConf.getId())
+                .idConf(employeeConf.getIdConf())
                 .companyName(employeeConf.getCompanyName())
                 .companyDescription(employeeConf.getCompanyDescription())
+                .logo(employeeConf.getLogo().getBytes())
                 .companySlogan(employeeConf.getCompanySlogan())
                 .companyAddress(employeeConf.getCompanyAddress())
                 .companyPhone(employeeConf.getCompanyPhone())
